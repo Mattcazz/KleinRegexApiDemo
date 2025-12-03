@@ -7,13 +7,15 @@ class API ():
         self.api = Klein()
         self.prefix = prefix or ''
 
-    def run(self, host : str, port : int):
+    def run(self, host: str, port: int):
         self.api.run(host, port)
 
-    def get_instance(self) -> Klein: 
+    def get_instance(self) -> Klein:
         return self.api
-    
-    def route(self, method : str, path : str,f):
+
+    def route(self, path: str, *args, **kwargs):
         url = f"{self.prefix}{path}"
-        self.api.route(url, methods=[method])(f)
-        print(f"Registering {url} into {f}")
+        def decorator(func):
+            self.api.route(url, *args, **kwargs)(func)
+            return func
+        return decorator

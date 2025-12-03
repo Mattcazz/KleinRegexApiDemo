@@ -16,15 +16,10 @@ class UserHandler():
         
     def __init__(self, api : API):
         self.api = api
-        self._register_routes()
+        self.register_routes()
         
 
-    @route("/users/<id>", "GET")
-    def get_user(self, request, id):
-        return f"User with id : {id}"
-
-
-    def _register_routes(self):
-        for name, method in inspect.getmembers(self, predicate=inspect.ismethod):
-            if getattr(method, "_is_route", False):
-                self.api.route(method._method, method._path, method)
+    def register_routes(self):
+        @self.api.route("/users/<id>", methods=["GET"])
+        def get_user(request, id):
+            return f"User with id : {id}"
