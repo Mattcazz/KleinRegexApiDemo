@@ -1,2 +1,2 @@
-twisted
-klein
+twisted==22.8.0
+klein==24.8.0
